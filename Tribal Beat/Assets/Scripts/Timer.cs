@@ -29,6 +29,10 @@ public class Timer : MonoBehaviour {
 		return (int)(Mathf.Floor((Time.time - startTime) / beatLength));
 	}
 
+	public float fractionalBeat () {
+		return (Time.time - startTime) / beatLength;
+	}
+
 	public int inBeatWindow (int beat) {
 		if (currentBeat () == beat) {
 			//on the beat

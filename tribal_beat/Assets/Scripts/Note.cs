@@ -13,7 +13,7 @@ public class Note : MonoBehaviour {
     private float directionX;
 
     private static float leftOrigin = -2.38f, rightOrigin = 0.58f;
-    private static float startY = -3, endY = 2.6f;
+    private float startY = -2.6f, endY = 2.6f;
     private static Sprite[] arrowSprites = Resources.LoadAll<Sprite> ("images/arrows");
 
 	private static string[] rightInput = {"up", "right", "down", "left"};
@@ -28,11 +28,17 @@ public class Note : MonoBehaviour {
 	void Start () {
 		startBeat = timer.closestBeat ();
 		endBeat = startBeat + 4;
-		if (!side) playTone();
+		if (!side) {
+			playTone ();
+			startY = 0;
+		} else {
+			endY = 0;
+		}
 		Update ();
 	}
 
 	void Update () {
+
 		string[] currentInput = (startSide ? leftInput : rightInput);
 		if (timer.beatStatus (endBeat) == 1 && side) {
 			if (Input.GetKeyDown (currentInput[0]) && direction == 3) destroyNote ();

@@ -49,10 +49,6 @@ public class GameController : MonoBehaviour {
 		return notesToPlay.Peek () as GameObject;
 	}
 
-	public void endRound () {
-		print ("round ending");
-	}
-
 	public 	void switchLeaders () {
 		print ("switching players");
 		if (leadPlayer == player1) {
@@ -61,14 +57,6 @@ public class GameController : MonoBehaviour {
 		} else {
 			leadPlayer = player1;
 			followPlayer = player2;
-		}
-	}
-
-	public void declareWinner () {
-		if (leadPlayer == player1) {
-			print ("player 1 wins!");
-		} else {
-			print ("player 2 wins!");
 		}
 	}
 }

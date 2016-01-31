@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
 	public int healthBarWidth; 
 	public GameObject redBar;
 	public GameObject greenBar;
+	public Timer timer;
 	public Vector3 position; 
 	public bool isHealthLow; 
 	
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour {
 	
 	void Start () {
 		currentHealth = 5;
+		timer = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Timer> ();
 	}
 	
 	
@@ -39,7 +41,8 @@ public class Player : MonoBehaviour {
 	}
 
 	public void decreaseHealth(){
-		if (currentHealth == 1) return;
+		if (currentHealth == 1) 
+			timer.forcedGameOver = true;
 		currentHealth -= 1; 
 	}
 }

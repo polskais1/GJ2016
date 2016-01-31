@@ -9,6 +9,7 @@ public class Timer : MonoBehaviour {
     // So... we have to throw out our tempo variable and instead rely on the fact
     // that our audio assets all have exactly 8 beats.
     public AudioSource backgroundBeat;
+	public AudioSource gods;
     private static int beatsInSoundClip = 8;
 
 	public PlayerSprite leftSprite, rightSprite;
@@ -23,7 +24,9 @@ public class Timer : MonoBehaviour {
     private int loops;
 
 	public int beatsInRound;
+	public bool forcedGameOver = false;
 	private bool switched = false;
+	private bool godsPlaying = false;
 
 	void Start () {
 
@@ -35,6 +38,8 @@ public class Timer : MonoBehaviour {
         lastOffset = backgroundBeat.timeSamples;
 
 		countDown.text = "" + (timeLeft () > 0 ? timeLeft () : 0);
+		if (gameOver ())
+			countDown.text = "";
 
 		if (!gameOver ()) {
 			leftRes.text = rightRes.text = "";
@@ -47,6 +52,13 @@ public class Timer : MonoBehaviour {
 				leftRes.text = "LOSER";
 			} else
 				rightRes.text = leftRes.text = "TIE";
+
+			if (!gods.isPlaying) {
+				godsPlaying = true;
+				gods.Play ();
+			} else if (!gods.isPlaying && godsPlaying) {
+//				Application.LoadLevel ("start-screen");
+			}
 			foreach (GameObject note in GameObject.FindGameObjectsWithTag ("Note")) {
 				Destroy (note);
 			}
@@ -63,7 +75,7 @@ public class Timer : MonoBehaviour {
 			rightSprite.changeChar ();
 			switched = true;
 		} else if (beatsPassed () == beatsInRound) {
-			gameController.endRound ();
+//			gameController.endRound ();
 		}
 
 
@@ -118,6 +130,8 @@ public class Timer : MonoBehaviour {
 	}
 
 	public bool gameOver() {
+		if (forcedGameOver)
+			return true;
 		return (beatsInRound <= fractionalBeat ());
 	}
 

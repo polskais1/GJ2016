@@ -9,7 +9,7 @@ public class Note : MonoBehaviour {
 	public int startBeat;
 	public int endBeat;
 	public int direction;
-	public float originX = -3;
+	public float originX;
 	public float directionX = 0;
 	static float startY = -3, endY = 3;
 	static Sprite[] arrowSprites = Resources.LoadAll<Sprite> ("images/arrows");
@@ -23,7 +23,7 @@ public class Note : MonoBehaviour {
 		startBeat = timer.currentBeat ();
 		endBeat = startBeat + 4;
 		gameObject.transform.localScale = new Vector2 (0.5f, 0.5f);
-		setDirection (Random.Range (0, 4));
+//		setDirection (Random.Range (0, 4));
 		Update ();
 	}
 
@@ -40,7 +40,7 @@ public class Note : MonoBehaviour {
 		gameObject.transform.position = new Vector2(originX + directionX, startY + (endY - startY)*fraction);
 	}
 
-	void setDirection (int dir) {
+	public void setDirection (int dir) {
 		direction = dir;
 		directionX = dir/1.6f;
 		gameObject.GetComponent<SpriteRenderer> ().sprite = arrowSprites [dir];

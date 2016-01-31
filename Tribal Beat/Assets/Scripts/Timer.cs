@@ -20,7 +20,7 @@ public class Timer : MonoBehaviour {
 
 	void Update () {
 		if (lastBeat != currentBeat ()) {
-			gameController.createNote ();
+//			gameController.createNote ();
 		}
 		lastBeat = currentBeat ();
 	}

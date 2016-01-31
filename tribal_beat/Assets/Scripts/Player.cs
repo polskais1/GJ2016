@@ -16,7 +16,7 @@ public class Player : MonoBehaviour {
 	[SerializeField]
 	private int maxHealth;
 	[SerializeField]
-	private int currentHealth; 
+	public int currentHealth; 
 	private GameObject healthBar; 
 	
 	private Animator animator;

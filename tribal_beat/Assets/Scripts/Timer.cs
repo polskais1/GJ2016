@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Timer : MonoBehaviour {
@@ -11,6 +12,8 @@ public class Timer : MonoBehaviour {
     private static int beatsInSoundClip = 8;
 
 	public PlayerSprite leftSprite, rightSprite;
+
+	public Text countDown, leftRes, rightRes, switching;
 
     // how long a player has to hit a beat, in fraction of a beat
     public float tolerance; 
@@ -31,6 +34,26 @@ public class Timer : MonoBehaviour {
         if (backgroundBeat.timeSamples < lastOffset) ++loops;
         lastOffset = backgroundBeat.timeSamples;
 
+		countDown.text = "" + (timeLeft () > 0 ? timeLeft () : 0);
+
+		if (!gameOver ()) {
+			leftRes.text = rightRes.text = "";
+		} else {
+			if (gameController.player1.currentHealth > gameController.player2.currentHealth) {
+				leftRes.text = "WINNER";
+				rightRes.text = "LOSER";
+			} else if (gameController.player1.currentHealth < gameController.player2.currentHealth) {
+				rightRes.text = "WINNER";
+				leftRes.text = "LOSER";
+			} else
+				rightRes.text = leftRes.text = "TIE";
+		}
+
+		if (displaySwitch())
+			switching.text = "SWITCHING\nLEADERS";
+		else
+			switching.text = "";
+
 		if (beatsPassed () == beatsInRound / 2 && !switched) {
 			gameController.switchLeaders ();
 			leftSprite.changeChar();
@@ -39,6 +62,8 @@ public class Timer : MonoBehaviour {
 		} else if (beatsPassed () == beatsInRound) {
 			gameController.endRound ();
 		}
+
+
 	}
 
     // returns the fractional amount of beats that have passed.
@@ -83,5 +108,19 @@ public class Timer : MonoBehaviour {
         if (beatDifference > tolerance) return 2;
         if (beatDifference > -tolerance) return 1;
         return 0;
+	}
+
+	public int timeLeft() {
+		return (int)((beatsInRound - fractionalBeat ()) * backgroundBeat.clip.length / beatsInSoundClip);
+	}
+
+	public bool gameOver() {
+		return (beatsInRound <= fractionalBeat ());
+	}
+
+	public bool displaySwitch() {
+		float left = -(fractionalBeat () - beatsInRound / 2);
+		float fractional = left - (int)(left);
+		return (fractional <= 0.5) && (left < 3 && left >= 0);
 	}
 }

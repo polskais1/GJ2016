@@ -4,8 +4,8 @@ using System.Collections;
 public class GameController : MonoBehaviour {
 
 	public Player player;
-	private Player player1;
-	private Player player2;
+	public Player player1;
+	public Player player2;
 	public Player leadPlayer;
 	public Player followPlayer;
 	public GameObject note;

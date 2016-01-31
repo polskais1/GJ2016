@@ -6,9 +6,10 @@ public class Note : MonoBehaviour {
 	public Timer timer;
 	public Player currentPlayer;
 	public GameController gameController;
+    public bool side; // whether or not the note is on the right side
 
     private int startBeat, endBeat, direction;
-    private float directionX, originX;
+    private float directionX;
 
     private static float leftOrigin = -2.38f, rightOrigin = 0.58f;
     private static float startY = -3, endY = 3;
@@ -29,7 +30,7 @@ public class Note : MonoBehaviour {
 	void Update () {
         if (timer.beatStatus(endBeat) == 2)
         {
-            if (originX > 0)
+            if (side)
             {
                 gameController.hurtPlayer(2);
                 gameObject.AddComponent<FadeAway>();
@@ -37,14 +38,13 @@ public class Note : MonoBehaviour {
             }
             else if (gameObject.GetComponent<FadeAway>() == null)
             {
-                if (originX < 0)
-                    gameController.createNote(direction, true).AddComponent<FadeIn>();
+                gameController.createNote(direction, true).AddComponent<FadeIn>();
                 gameObject.AddComponent<FadeAway>();
             }
         }
 
 		float fraction = (timer.fractionalBeat () - startBeat)/(endBeat - startBeat);
-		gameObject.transform.position = new Vector2(originX + directionX, startY + (endY - startY)*fraction);
+		gameObject.transform.position = new Vector2(originX() + directionX, startY + (endY - startY)*fraction);
 	}
 
 	public void setDirection (int dir) {
@@ -53,9 +53,27 @@ public class Note : MonoBehaviour {
 		gameObject.GetComponent<SpriteRenderer> ().sprite = arrowSprites [dir];
 	}
 
-    public void setSide(bool side)
+    public float originX()
     {
-        if (!side) originX = leftOrigin;
-        else originX = rightOrigin;
+        if (!side) return leftOrigin;
+        return rightOrigin;
+    }
+
+    public void playTone()
+    {
+        gameObject.GetComponent<AudioSource>().PlayOneShot(playerTone(side, direction));
+    }
+
+    private static AudioClip playerTone(bool player, int dir)
+    {
+        string n = "";
+        switch (dir)
+        {
+            case 0: n = "C"; break;
+            case 1: n = "D"; break;
+            case 2: n = "F"; break;
+            case 3: n = "G"; break;
+        }
+        return Resources.Load<AudioClip>("Audio/P" + (player ? "2_" : "1_") + n);
     }
 }

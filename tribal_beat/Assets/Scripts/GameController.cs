@@ -23,8 +23,12 @@ public class GameController : MonoBehaviour {
 
 	public GameObject createNote (int dir, bool rightSide) {
 		GameObject newNote = Instantiate(note, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
-		newNote.GetComponent<Note> ().setDirection (dir);
-		newNote.GetComponent<Note> ().setSide(rightSide);
+        Note myNote = newNote.GetComponent<Note>();
+		myNote.setDirection (dir);
+        myNote.side = rightSide;
+        // TEST PLAY: 
+        myNote.playTone();
+       
 		if (rightSide)
 			notesToPlay.Push (newNote);
         return newNote;

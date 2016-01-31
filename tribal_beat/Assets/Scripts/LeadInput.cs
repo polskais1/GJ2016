@@ -6,8 +6,8 @@ public class LeadInput : MonoBehaviour {
 	public GameController gameController;
 	public Timer timer;
 
-	private static string[] leftInput = {"up", "right", "down", "left"};
-	private static string[] rightInput = {"w", "d", "s", "a"};
+	private static string[] rightInput = {"up", "right", "down", "left"};
+	private static string[] leftInput = {"w", "d", "s", "a"};
 	
 	void Start () {
 	

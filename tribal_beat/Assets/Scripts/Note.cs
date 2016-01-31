@@ -16,8 +16,8 @@ public class Note : MonoBehaviour {
     private static float startY = -3, endY = 2.6f;
     private static Sprite[] arrowSprites = Resources.LoadAll<Sprite> ("images/arrows");
 
-	private static string[] leftInput = {"up", "right", "down", "left"};
-	private static string[] rightInput = {"w", "d", "s", "a"};
+	private static string[] rightInput = {"up", "right", "down", "left"};
+	private static string[] leftInput = {"w", "d", "s", "a"};
 
 	void Awake(){
 		var camera = GameObject.FindGameObjectWithTag("MainCamera");

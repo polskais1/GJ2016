@@ -12,7 +12,7 @@ public class Note : MonoBehaviour {
     private float directionX;
 
     private static float leftOrigin = -2.38f, rightOrigin = 0.58f;
-    private static float startY = -3, endY = 3;
+    private static float startY = -3, endY = 2.6f;
     private static Sprite[] arrowSprites = Resources.LoadAll<Sprite> ("images/arrows");
 
 	void Awake(){
@@ -24,11 +24,18 @@ public class Note : MonoBehaviour {
 	void Start () {
 		startBeat = timer.closestBeat ();
 		endBeat = startBeat + 4;
+		if (!side) playTone();
 		Update ();
 	}
 
 	void Update () {
-        if (timer.beatStatus(endBeat) == 2)
+
+		if (timer.beatStatus (endBeat) == 1 && side) {
+			if (Input.GetKeyDown ("w") && direction == 3) destroyNote ();
+			if (Input.GetKeyDown ("d") && direction == 2) destroyNote ();
+			if (Input.GetKeyDown ("s") && direction == 0) destroyNote ();
+			if (Input.GetKeyDown ("a") && direction == 1) destroyNote ();
+		} else if (timer.beatStatus(endBeat) == 2)
         {
             if (side)
             {
@@ -47,10 +54,20 @@ public class Note : MonoBehaviour {
 		gameObject.transform.position = new Vector2(originX() + directionX, startY + (endY - startY)*fraction);
 	}
 
+	void destroyNote () {
+		playTone();
+		gameObject.AddComponent<FadeAway>();
+		Destroy(this);
+	}
+
 	public void setDirection (int dir) {
 		direction = dir;
 		directionX = dir/1.6f;
 		gameObject.GetComponent<SpriteRenderer> ().sprite = arrowSprites [dir];
+	}
+
+	public int getDirection () {
+		return direction;
 	}
 
     public float originX()

@@ -55,7 +55,7 @@ public class Timer : MonoBehaviour {
     // returns: 2 if PAST the beat window, 1 if ON the beat window, 0 if NOT YET on the beat window.
 	public int beatStatus (int beat) {
         // this tells us how far away we are from the argument beat, with fractions.
-        float beatDifference = fractionalBeat() + 0.5f - beat;
+        float beatDifference = fractionalBeat() + 0.0f - beat;
         if (beatDifference > tolerance) return 2;
         if (beatDifference > -tolerance) return 1;
         return 0;

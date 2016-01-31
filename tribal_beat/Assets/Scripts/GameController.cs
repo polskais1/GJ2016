@@ -26,8 +26,6 @@ public class GameController : MonoBehaviour {
         Note myNote = newNote.GetComponent<Note>();
 		myNote.setDirection (dir);
         myNote.side = rightSide;
-        // TEST PLAY: 
-        myNote.playTone();
        
 		if (rightSide)
 			notesToPlay.Push (newNote);

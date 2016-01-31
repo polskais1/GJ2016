@@ -15,9 +15,9 @@ public class Fire : MonoBehaviour {
 	}
 
 	void Update () {
-		if (timer.currentBeat () - currentBeat >= 1) {
+		if (timer.beatsPassed () - currentBeat >= 1) {
 			replaceImage ();
-			currentBeat = timer.currentBeat ();
+			currentBeat = timer.beatsPassed ();
 		}
 	}
 

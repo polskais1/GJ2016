@@ -22,10 +22,9 @@ public class Note : MonoBehaviour {
 	}
 
 	void Start () {
-		startBeat = timer.currentBeat ();
+		startBeat = timer.closestBeat ();
 		endBeat = startBeat + 4;
 		gameObject.transform.localScale = new Vector2 (0.5f, 0.5f);
-//		setDirection (Random.Range (0, 4));
 		Update ();
 	}
 

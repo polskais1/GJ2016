@@ -4,48 +4,63 @@ using System.Collections;
 public class Timer : MonoBehaviour {
 
 	public GameController gameController;
+    public AudioSource backgroundBeat;
+    private static int beatsInSoundClip = 8;
 
+    // the tempo
 	public float tempo;
-	public float tolerance; //how long a player has to hit a beat, in fraction of a beat
+    // how long a player has to hit a beat, in fraction of a beat
+    public float tolerance; 
 	
-	private float startTime;
-	private float beatLength;
-	private int lastBeat;
+    // interval values used to compute beats
+	private float startTime, lastOffset;
+    private int loops;
 
 	void Start () {
 		startTime = Time.time;
-		beatLength = 60 / tempo;
-		lastBeat = 0;
 	}
 
-	void Update () {
-		lastBeat = currentBeat ();
-	}
+    void Update ()
+    {
+        if (backgroundBeat.timeSamples < lastOffset) ++loops;
+        lastOffset = backgroundBeat.timeSamples;
+    }
 
-	public int currentBeat () {
-		return (int)(Mathf.Floor((Time.time - startTime) / beatLength));
-	}
-
+    // returns the fractional amount of beats that have passed.
+    // this is the foundation of all the other class methods.
 	public float fractionalBeat () {
-		return (Time.time - startTime) / beatLength;
+        // equivalent to (Time.time - startTime) / beatLength + 0.5f;
+        // return (Time.time - startTime) * tempo / 60f + 0.5f;
+        // but we want to sync to the audio, so we use numbers from the audio.
+        return ((backgroundBeat.timeSamples + 0f) / backgroundBeat.clip.samples + loops) * beatsInSoundClip;
+    }
+
+    // returns: the number of the closest beat to now.
+    // for use in inBeatWindow(), beatStatus(), etc.
+    // for getting animations to align with the beat, use beatsPassed().
+    public int closestBeat()
+    {
+        return (int)(fractionalBeat() + 0.5f);
+    }
+
+    // returns: the number of beats that have passed.
+    public int beatsPassed()
+    {
+        return (int)fractionalBeat();
+    }
+
+    // returns: whether or not we're close to a beat.
+    public bool inBeatWindow () {
+		float beatFraction = fractionalBeat () + 0.5f - Mathf.Round (fractionalBeat ());
+		return (beatFraction < 0.5 + tolerance && beatFraction > 0.5f - tolerance);
 	}
 
-	public bool inBeatWindow () {
-		return true;
-		float beatFraction = fractionalBeat () - Mathf.Floor (fractionalBeat ());
-		return (beatFraction < 0.5 + tolerance && beatFraction > 0.5 - tolerance);
-	}
-
+    // returns: 2 if PAST the beat window, 1 if ON the beat window, 0 if NOT YET on the beat window.
 	public int beatStatus (int beat) {
-		if (currentBeat () == beat) {
-			//on the beat
-			return 2;
-		} else if (currentBeat () > beat) {
-			//missed the beat
-			return 1;
-		} else {
-			//beat has yet to happen
-			return 0;
-		}
+        // this tells us how far away we are from the argument beat, with fractions.
+        float beatDifference = fractionalBeat() + 0.5f - beat;
+        if (beatDifference > tolerance) return 2;
+        if (beatDifference > -tolerance) return 1;
+        return 0;
 	}
 }

@@ -5,6 +5,7 @@ public class Note : MonoBehaviour {
 
 	public Timer timer;
 	public Player currentPlayer;
+	public GameController gameController;
 
 	public int startBeat;
 	public int endBeat;
@@ -17,6 +18,7 @@ public class Note : MonoBehaviour {
 	void Awake(){
 		var camera = GameObject.FindGameObjectWithTag("MainCamera");
 		timer = camera.GetComponent<Timer> ();
+		gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController> ();
 	}
 
 	void Start () {
@@ -29,11 +31,14 @@ public class Note : MonoBehaviour {
 
 	void Update () {
 		int noteStatus = timer.beatStatus (endBeat);
-		if (noteStatus == 2) {
+		if (noteStatus == 2 && originX > 0) {
+			gameController.hurtPlayer (2);
 			Destroy (gameObject);
-//			currentPlayer.missNote ();
-		} else if (noteStatus == 1) {
-//			currentPlayer.hitNote ();
+		} else if (noteStatus == 2) {
+			if (originX < 0) {
+				gameController.createNote (direction, .58f);
+			}
+			Destroy (gameObject);
 		}
 
 		float fraction = (timer.fractionalBeat () - startBeat)/(endBeat - startBeat);

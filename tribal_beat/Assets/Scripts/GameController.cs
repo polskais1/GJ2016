@@ -21,12 +21,13 @@ public class GameController : MonoBehaviour {
 
 	}
 
-	public void createNote (int dir, bool rightSide) {
+	public GameObject createNote (int dir, bool rightSide) {
 		GameObject newNote = Instantiate(note, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
 		newNote.GetComponent<Note> ().setDirection (dir);
 		newNote.GetComponent<Note> ().setSide(rightSide);
 		if (rightSide)
 			notesToPlay.Push (newNote);
+        return newNote;
 	}
 
 	public void hurtPlayer (int playerNum) {

@@ -27,16 +27,21 @@ public class Note : MonoBehaviour {
 	}
 
 	void Update () {
-		int noteStatus = timer.beatStatus (endBeat);
-		if (noteStatus == 2 && originX > 0) {
-			gameController.hurtPlayer (2);
-			Destroy (gameObject);
-		} else if (noteStatus == 2) {
-			if (originX < 0) {
-				gameController.createNote (direction, true);
-			}
-			Destroy (gameObject);
-		}
+        if (timer.beatStatus(endBeat) == 2)
+        {
+            if (originX > 0)
+            {
+                gameController.hurtPlayer(2);
+                gameObject.AddComponent<FadeAway>();
+                Destroy(this);
+            }
+            else if (gameObject.GetComponent<FadeAway>() == null)
+            {
+                if (originX < 0)
+                    gameController.createNote(direction, true).AddComponent<FadeIn>();
+                gameObject.AddComponent<FadeAway>();
+            }
+        }
 
 		float fraction = (timer.fractionalBeat () - startBeat)/(endBeat - startBeat);
 		gameObject.transform.position = new Vector2(originX + directionX, startY + (endY - startY)*fraction);

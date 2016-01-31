@@ -10,6 +10,8 @@ public class Timer : MonoBehaviour {
     public AudioSource backgroundBeat;
     private static int beatsInSoundClip = 8;
 
+	public PlayerSprite leftSprite, rightSprite;
+
     // how long a player has to hit a beat, in fraction of a beat
     public float tolerance; 
 	
@@ -17,11 +19,27 @@ public class Timer : MonoBehaviour {
 	private float lastOffset = 0;
     private int loops;
 
+	public int beatsInRound;
+	private bool switched = false;
+
+	void Start () {
+
+	}
+
     void Update ()
     {
         if (backgroundBeat.timeSamples < lastOffset) ++loops;
         lastOffset = backgroundBeat.timeSamples;
-    }
+
+		if (beatsPassed () == beatsInRound / 2 && !switched) {
+			gameController.switchLeaders ();
+			leftSprite.changeChar();
+			rightSprite.changeChar ();
+			switched = true;
+		} else if (beatsPassed () == beatsInRound) {
+			gameController.endRound ();
+		}
+	}
 
     // returns the fractional amount of beats that have passed.
     // this is the foundation of all the other class methods.
@@ -45,6 +63,12 @@ public class Timer : MonoBehaviour {
     {
         return (int)fractionalBeat();
     }
+
+	// returns: whether the game's switched the lead/follower
+	public bool hasSwitched()
+	{
+		return switched;
+	}
 
     // returns: whether or not we're close to a beat.
     public bool inBeatWindow () {

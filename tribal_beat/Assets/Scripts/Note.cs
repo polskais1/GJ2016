@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class Note : MonoBehaviour {
@@ -6,7 +6,8 @@ public class Note : MonoBehaviour {
 	public Timer timer;
 	public Player currentPlayer;
 	public GameController gameController;
-    public bool side; // whether or not the note is on the right side
+    public bool side; // whether or not the note is on the late side
+	public bool startSide; // whether or not the note was spawned by the right players
 
     private int startBeat, endBeat, direction;
     private float directionX;
@@ -14,6 +15,9 @@ public class Note : MonoBehaviour {
     private static float leftOrigin = -2.38f, rightOrigin = 0.58f;
     private static float startY = -3, endY = 2.6f;
     private static Sprite[] arrowSprites = Resources.LoadAll<Sprite> ("images/arrows");
+
+	private static string[] leftInput = {"up", "right", "down", "left"};
+	private static string[] rightInput = {"w", "d", "s", "a"};
 
 	void Awake(){
 		var camera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -29,23 +33,24 @@ public class Note : MonoBehaviour {
 	}
 
 	void Update () {
-
+		string[] currentInput = (startSide ? leftInput : rightInput);
 		if (timer.beatStatus (endBeat) == 1 && side) {
-			if (Input.GetKeyDown ("w") && direction == 3) destroyNote ();
-			if (Input.GetKeyDown ("d") && direction == 2) destroyNote ();
-			if (Input.GetKeyDown ("s") && direction == 0) destroyNote ();
-			if (Input.GetKeyDown ("a") && direction == 1) destroyNote ();
-		} else if (timer.beatStatus(endBeat) == 2)
+			if (Input.GetKeyDown (currentInput[0]) && direction == 3) destroyNote ();
+			if (Input.GetKeyDown (currentInput[1]) && direction == 2) destroyNote ();
+			if (Input.GetKeyDown (currentInput[2]) && direction == 0) destroyNote ();
+			if (Input.GetKeyDown (currentInput[3]) && direction == 1) destroyNote ();
+		}
+		else if (timer.beatStatus(endBeat) == 2)
         {
             if (side)
             {
-                gameController.hurtPlayer(2);
+                gameController.hurtPlayer(!startSide);
                 gameObject.AddComponent<FadeAway>();
                 Destroy(this);
             }
             else if (gameObject.GetComponent<FadeAway>() == null)
             {
-                gameController.createNote(direction, true).AddComponent<FadeIn>();
+                gameController.createNote(direction, true, startSide).AddComponent<FadeIn>();
                 gameObject.AddComponent<FadeAway>();
             }
         }
@@ -72,7 +77,7 @@ public class Note : MonoBehaviour {
 
     public float originX()
     {
-        if (!side) return leftOrigin;
+        if ((!side && !startSide) || (side && startSide)) return leftOrigin;
         return rightOrigin;
     }
 

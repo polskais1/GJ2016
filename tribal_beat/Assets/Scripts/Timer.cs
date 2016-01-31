@@ -47,6 +47,9 @@ public class Timer : MonoBehaviour {
 				leftRes.text = "LOSER";
 			} else
 				rightRes.text = leftRes.text = "TIE";
+			foreach (GameObject note in GameObject.FindGameObjectsWithTag ("Note")) {
+				Destroy (note);
+			}
 		}
 
 		if (displaySwitch())

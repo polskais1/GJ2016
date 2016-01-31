@@ -14,6 +14,7 @@ public class LeadInput : MonoBehaviour {
 	}
 
 	void Update () {
+		if (timer.gameOver ()) return;
 		string[] currentInput = (timer.hasSwitched () ? rightInput : leftInput);
 		if (timer.inBeatWindow ()) {
 			if (Input.GetKeyDown (currentInput[0])) {

@@ -6,14 +6,14 @@ public class Note : MonoBehaviour {
 	public Timer timer;
 	public Player currentPlayer;
 	public GameController gameController;
-
-	public int startBeat;
-	public int endBeat;
-	public int direction;
 	public float originX;
-	public float directionX = 0;
-	static float startY = -3, endY = 3;
-	static Sprite[] arrowSprites = Resources.LoadAll<Sprite> ("images/arrows");
+
+    private int startBeat;
+    private int endBeat;
+    private int direction;
+    private float directionX = 0;
+    private static float startY = -3, endY = 3;
+    private static Sprite[] arrowSprites = Resources.LoadAll<Sprite> ("images/arrows");
 
 	void Awake(){
 		var camera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -24,7 +24,6 @@ public class Note : MonoBehaviour {
 	void Start () {
 		startBeat = timer.closestBeat ();
 		endBeat = startBeat + 4;
-		gameObject.transform.localScale = new Vector2 (0.5f, 0.5f);
 		Update ();
 	}
 

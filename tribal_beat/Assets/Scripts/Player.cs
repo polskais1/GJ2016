@@ -24,17 +24,14 @@ public class Player : MonoBehaviour {
 	static Sprite[] healthBars = Resources.LoadAll<Sprite> ("images/health");
 	
 	void Start () {
-		currentHealth = 10;
+		currentHealth = 5;
 	}
 	
 	
 	void Update () {
 		gameObject.transform.localScale = new Vector2 (1, currentHealth);
-	
-		if (currentHealth < 0)
-			currentHealth = 0;
 
-		if (currentHealth <= maxHealth * .30 && !isHealthLow ) {
+		if (currentHealth <= maxHealth * .4 && !isHealthLow ) {
 			gameObject.GetComponent<SpriteRenderer> ().sprite = healthBars[1];
 			isHealthLow = true;
 		}
@@ -42,6 +39,7 @@ public class Player : MonoBehaviour {
 	}
 
 	public void decreaseHealth(){
+		if (currentHealth == 1) return;
 		currentHealth -= 1; 
 	}
 }

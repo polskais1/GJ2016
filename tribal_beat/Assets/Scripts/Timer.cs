@@ -4,11 +4,12 @@ using System.Collections;
 public class Timer : MonoBehaviour {
 
 	public GameController gameController;
+    // Time.time is better than Time.deltaTime, but AudioSource.timeSamples is exact.
+    // So... we have to throw out our tempo variable and instead rely on the fact
+    // that our audio assets all have exactly 8 beats.
     public AudioSource backgroundBeat;
     private static int beatsInSoundClip = 8;
 
-    // the tempo
-	public float tempo;
     // how long a player has to hit a beat, in fraction of a beat
     public float tolerance; 
 	

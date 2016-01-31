@@ -6,7 +6,7 @@ public class Timer : MonoBehaviour {
 	public GameController gameController;
 
 	public float tempo;
-	public float tolerance; //how long a player has to hit a beat
+	public float tolerance; //how long a player has to hit a beat, in fraction of a beat
 	
 	private float startTime;
 	private float beatLength;
@@ -19,9 +19,6 @@ public class Timer : MonoBehaviour {
 	}
 
 	void Update () {
-		if (lastBeat != currentBeat ()) {
-//			gameController.createNote ();
-		}
 		lastBeat = currentBeat ();
 	}
 
@@ -33,7 +30,13 @@ public class Timer : MonoBehaviour {
 		return (Time.time - startTime) / beatLength;
 	}
 
-	public int inBeatWindow (int beat) {
+	public bool inBeatWindow () {
+		return true;
+		float beatFraction = fractionalBeat () - Mathf.Floor (fractionalBeat ());
+		return (beatFraction < 0.5 + tolerance && beatFraction > 0.5 - tolerance);
+	}
+
+	public int beatStatus (int beat) {
 		if (currentBeat () == beat) {
 			//on the beat
 			return 2;

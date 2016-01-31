@@ -28,7 +28,7 @@ public class Note : MonoBehaviour {
 	}
 
 	void Update () {
-		int noteStatus = timer.inBeatWindow (endBeat);
+		int noteStatus = timer.beatStatus (endBeat);
 		if (noteStatus == 2) {
 			Destroy (gameObject);
 //			currentPlayer.missNote ();

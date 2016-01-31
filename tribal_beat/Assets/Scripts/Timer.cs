@@ -14,12 +14,8 @@ public class Timer : MonoBehaviour {
     public float tolerance; 
 	
     // interval values used to compute beats
-	private float startTime, lastOffset;
+	private float lastOffset = 0;
     private int loops;
-
-	void Start () {
-		startTime = Time.time;
-	}
 
     void Update ()
     {

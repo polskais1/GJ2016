@@ -55,7 +55,6 @@ public class PlayerSprite : MonoBehaviour {
                 character = nextChar;
                 frame = -1;
             }
-            print(character + " " + frame);
             sprite.sprite = Resources.Load(spriteName(character, frame), typeof(Sprite)) as Sprite;
         }
 	}

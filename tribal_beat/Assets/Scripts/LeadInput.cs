@@ -13,16 +13,16 @@ public class LeadInput : MonoBehaviour {
 	void Update () {
 		if (timer.inBeatWindow ()) {
 			if (Input.GetKeyDown ("up")) {
-				gameController.createNote (3, -2.38f);
+				gameController.createNote (3, false);
 			}
 			if (Input.GetKeyDown ("right")) {
-				gameController.createNote (2, -2.38f);
+				gameController.createNote (2, false);
 			}
 			if (Input.GetKeyDown ("down")) {
-				gameController.createNote (0, -2.38f);
+				gameController.createNote (0, false);
 			}
 			if (Input.GetKeyDown ("left")) {
-				gameController.createNote (1, -2.38f);
+				gameController.createNote (1, false);
 			}
 		}
 	}

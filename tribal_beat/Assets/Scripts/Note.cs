@@ -6,12 +6,11 @@ public class Note : MonoBehaviour {
 	public Timer timer;
 	public Player currentPlayer;
 	public GameController gameController;
-	public float originX;
 
-    private int startBeat;
-    private int endBeat;
-    private int direction;
-    private float directionX = 0;
+    private int startBeat, endBeat, direction;
+    private float directionX, originX;
+
+    private static float leftOrigin = -2.38f, rightOrigin = 0.58f;
     private static float startY = -3, endY = 3;
     private static Sprite[] arrowSprites = Resources.LoadAll<Sprite> ("images/arrows");
 
@@ -34,7 +33,7 @@ public class Note : MonoBehaviour {
 			Destroy (gameObject);
 		} else if (noteStatus == 2) {
 			if (originX < 0) {
-				gameController.createNote (direction, .58f);
+				gameController.createNote (direction, true);
 			}
 			Destroy (gameObject);
 		}
@@ -48,4 +47,10 @@ public class Note : MonoBehaviour {
 		directionX = dir/1.6f;
 		gameObject.GetComponent<SpriteRenderer> ().sprite = arrowSprites [dir];
 	}
+
+    public void setSide(bool side)
+    {
+        if (!side) originX = leftOrigin;
+        else originX = rightOrigin;
+    }
 }
